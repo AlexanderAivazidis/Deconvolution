@@ -1,13 +1,22 @@
 ### Kptn bulk data deconvolution using Saunders et al. data
 
-setwd('/nfs/users/nfs_a/aa16/Deconvolution/')
-#setwd('/home/jovyan/Deconvolution/')
-
-source('deconvolution.R')
+farm = FALSE
 import::from(myUtils, mapIdsMouse)
 
-dataDirectory = '/lustre/scratch117/cellgen/team283/brainData/'
-#dataDirectory = '../data/'
+if (farm == TRUE){
+  setwd('/nfs/users/nfs_a/aa16/Deconvolution/')
+}else{
+  setwd('/home/jovyan/Deconvolution/')
+}
+
+source('deconvolution.R')
+
+if (farm == TRUE){
+  dataDirectory = '/lustre/scratch117/cellgen/team283/brainData/' 
+}else{
+  dataDirectory = '../data/'
+}
+
 resultsDirectory = 'results/'
 figuresDirectory = 'figures/'
 
@@ -34,9 +43,13 @@ for ( i in 1:length(regionVector)){
   results = getDeconvolution(counts_bulk = reads_bulk , counts_sc = counts_sc, clusters = celltypes, return = TRUE,
                              save = TRUE, file = paste(resultsDirectory, region, 'DeconvolutionSpecificCelltypes.rds', sep = ''))
   summarizeDeconvolution(results, return = FALSE, save = TRUE, file = paste(resultsDirectory, region, 'DeconvolutionSpecificCelltypesSummary.csv', sep = ''))
+  plotDeconvolution(results, save = TRUE, file = paste(figuresDirectory, region, 'DeconvolutionSpecificCelltypes.pdf', sep = ''),
+                               width = 10, height = 10)
   results = getDeconvolution(counts_bulk = reads_bulk , counts_sc = counts_sc, clusters = general_celltypes, return = TRUE,
                              save = TRUE, file = paste(resultsDirectory, region, 'DeconvolutionGeneralCelltypes.rds', sep = ''))
   summarizeDeconvolution(results, return = FALSE, save = TRUE, file = paste(resultsDirectory, region, 'DeconvolutionGeneralCelltypesSummary.csv', sep = ''))
+  plotDeconvolution(results, save = TRUE, file = paste(figuresDirectory, region, 'DeconvolutionGeneralCelltypes.pdf', sep = ''),
+                               width = 10, height = 10)
 }
 
 

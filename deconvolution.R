@@ -42,7 +42,7 @@ plotDeconvolution = function(results, save = TRUE, file = 'deconvolution.pdf', w
                  facet.by = "cell_cluster", short.panel.labs = FALSE)
   if (save){
     pdf(file = file, width = width, height = height)
-    p + stat_compare_means(aes(group = genotype), label = "p.signif")#, method = 'wilcox.test')
+    print(p + stat_compare_means(aes(group = genotype), label = "p.signif"))#, method = 'wilcox.test')
     dev.off()
   }else{
     p + stat_compare_means(aes(group = genotype), label = "p.signif")#, method = 'wilcox.test')

@@ -11,10 +11,11 @@ dataDirectory = '/lustre/scratch117/cellgen/team283/brainData/'
 resultsDirectory = 'results/'
 figuresDirectory = 'figures/'
 
-regionVector = c('Cerebellum', 'Frontal Cortex', 'Hippocampus', 'Striatum')
+regionVector = c('Cerebellum', 'FrontalCortex', 'Hippocampus', 'Striatum')
 
 for ( i in 1:length(regionVector)){
   region = regionVector[i]
+  print(region)
   # Prepare data:
   counts_sc = readRDS(paste(dataDirectory, 'Saunders/Saunders_Mouse_', region, '_counts.rds', sep = ''))
   coldata = readRDS(paste(dataDirectory, 'Saunders/Saunders_Mouse_', region, '_coldata.rds', sep = ''))
@@ -30,10 +31,12 @@ for ( i in 1:length(regionVector)){
   general_celltypes[substring(firstMarker,1,3) == 'Gad'] = paste('GABAergic', general_celltypes[substring(firstMarker,1,3) == 'Gad'], sep = '')
   
   # Run MuSiC:
+  results = getDeconvolution(counts_bulk = reads_bulk , counts_sc = counts_sc, clusters = celltypes, return = TRUE,
+                             save = TRUE, file = paste(resultsDirectory, region, 'DeconvolutionSpecificCelltypes.rds', sep = ''))
+  summarizeDeconvolution(results, return = FALSE, save = TRUE, file = paste(resultsDirectory, region, 'DeconvolutionSpecificCelltypesSummary.csv', sep = ''))
   results = getDeconvolution(counts_bulk = reads_bulk , counts_sc = counts_sc, clusters = general_celltypes, return = TRUE,
-                             save = TRUE, file = paste(resultsDirectory, region, 'Deconvolution.rds', sep = ''))
-  plotDeconvolution(results, save = FALSE)
-  summarizeDeconvolution(results, return = FALSE, save = TRUE, file = paste(resultsDirectory, region, 'DeconvolutionSummary.csv', sep = ''))
+                             save = TRUE, file = paste(resultsDirectory, region, 'DeconvolutionGeneralCelltypes.rds', sep = ''))
+  summarizeDeconvolution(results, return = FALSE, save = TRUE, file = paste(resultsDirectory, region, 'DeconvolutionGeneralCelltypesSummary.csv', sep = ''))
 }
 
 

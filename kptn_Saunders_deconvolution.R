@@ -6,7 +6,7 @@ setwd('/nfs/users/nfs_a/aa16/Deconvolution/')
 source('deconvolution.R')
 import::from(myUtils, mapIdsMouse)
 
-dataDirectory = '/lustre/scratch117/cellgen/team283/brainData'
+dataDirectory = '/lustre/scratch117/cellgen/team283/brainData/'
 #dataDirectory = '../data/'
 resultsDirectory = 'results/'
 figuresDirectory = 'figures/'

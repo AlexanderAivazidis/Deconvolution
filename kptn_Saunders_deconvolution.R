@@ -13,7 +13,7 @@ figuresDirectory = 'figures/'
 
 regionVector = c('Cerebellum', 'Frontal Cortex', 'Hippocampus', 'Striatum')
 
-for ( i in regionVector){
+for ( i in 1:length(regionVector)){
   region = regionVector[i]
   # Prepare data:
   counts_sc = readRDS(paste(dataDirectory, 'Saunders/Saunders_Mouse_', region, '_counts.rds', sep = ''))
@@ -35,4 +35,5 @@ for ( i in regionVector){
   plotDeconvolution(results, save = FALSE)
   summarizeDeconvolution(results, return = FALSE, save = TRUE, file = paste(resultsDirectory, region, 'DeconvolutionSummary.csv', sep = ''))
 }
+
 
